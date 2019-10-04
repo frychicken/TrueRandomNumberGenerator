@@ -34,9 +34,11 @@ public class Interface extends Component  implements ActionListener{
 	JLabel albel[];
 	JLabel allalbel[] = new JLabel[4];
 	GenerateTrueRandom gtr = new GenerateTrueRandom();
-	JLabel credit0 = new JLabel("True random generator by measuring amospheric noise");
+	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
 	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
+	
+	JLabel betaalert = new JLabel("Currently in Beta");
 	
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
@@ -47,7 +49,7 @@ public class Interface extends Component  implements ActionListener{
 	JLabel show ;
 	
 	public void execute() {
-		frame = new JFrame("Random Number Generator");
+		frame = new JFrame("Try your luck tuesday");
 		bg = new ButtonGroup(); 
 		panel = new JPanel();
 		allalbel[0] = new JLabel("Total number");
@@ -79,6 +81,8 @@ public class Interface extends Component  implements ActionListener{
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
 		
+		betaalert.setBounds(600, 200, 100, 25);
+		betaalert.setForeground(Color.RED);
 		
 		totalnumber.setBounds(250, 150, 200, 25);
 		min.setBounds(250, 180, 200, 25);
@@ -114,6 +118,7 @@ public class Interface extends Component  implements ActionListener{
 		panel.add(credit1);
 		panel.add(credit0);
 		panel.add(show);
+		panel.add(betaalert);
 		frame.add(panel);
 		frame.setVisible(true); 
 	}
@@ -204,9 +209,23 @@ public class Interface extends Component  implements ActionListener{
 				
 				button.setText("Done");
 				stopc = false;
-				button.setBackground(null);
-				button.setForeground(null);
+				button.setBackground(Color.BLACK);
+				button.setForeground(Color.WHITE);
 				try {
+					Thread.sleep(1000);
+					button.setText("Wait for 10 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 9 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 8 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 7 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 6 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 5 seconds ...");
+					Thread.sleep(1000);
+					button.setText("Wait for 4 seconds ...");
 					Thread.sleep(1000);
 					button.setText("Wait for 3 seconds ...");
 					Thread.sleep(1000);
@@ -218,7 +237,8 @@ public class Interface extends Component  implements ActionListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+				button.setBackground(null);
+				button.setForeground(null);
 				button.setText("Generate TRUE random number");
 
 			}
