@@ -37,7 +37,7 @@ public class Interface extends Component  implements ActionListener{
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
 	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
-	
+	String quota = gtr.QuotaCheck();
 	JLabel betaalert = new JLabel("Currently in Beta");
 	
 	JRadioButton chooseal = new JRadioButton("Random integer");
@@ -81,7 +81,7 @@ public class Interface extends Component  implements ActionListener{
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
 		
-		betaalert.setBounds(600, 200, 100, 25);
+		betaalert.setBounds(600, 200, 400, 25);
 		betaalert.setForeground(Color.RED);
 		
 		totalnumber.setBounds(250, 150, 200, 25);
@@ -179,8 +179,7 @@ public class Interface extends Component  implements ActionListener{
 
 	private void generateRand(int total, int minimum, int maximum, int baseofnum) {
 		stopc = true;
-		button.setText("Retrieving TRUE random number from server");  
-
+		button.setText("Retrieving TRUE random number from server"); 
 		new Thread(new Runnable() {
 			public void run() {
 				while (stopc) {
@@ -206,11 +205,13 @@ public class Interface extends Component  implements ActionListener{
 					rannum = gtr.randomStringGenrator(total, maximum-minimum, true, true, true, true);
           
 				printingNumber(rannum);
-				
 				button.setText("Done");
 				stopc = false;
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
+				
+				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + " Quota: " + quota);				
+
 				try {
 					Thread.sleep(1000);
 					button.setText("Wait for 10 seconds ...");
