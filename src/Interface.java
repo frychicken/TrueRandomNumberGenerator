@@ -26,7 +26,7 @@ public class Interface extends Component  implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	JFrame frame;
 	JPanel panel;
-    int cc=0;
+	int cc=0;
 	JTextField totalnumber;
 	JTextField min;
 	JTextField max;
@@ -37,8 +37,10 @@ public class Interface extends Component  implements ActionListener{
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
 	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
-	String quota = gtr.QuotaCheck();
-	JLabel betaalert = new JLabel("Currently in Beta");
+	
+	JLabel betaalert = new JLabel("Currently in Beta, only random integer works");
+
+	JButton idontunderstand = new JButton("I don't understand");
 	
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
@@ -47,7 +49,7 @@ public class Interface extends Component  implements ActionListener{
 	JButton button = new JButton("Generate TRUE random number");
 	ButtonGroup bg;
 	JLabel show ;
-	
+
 	public void execute() {
 		frame = new JFrame("Try your luck tuesday");
 		bg = new ButtonGroup(); 
@@ -56,12 +58,12 @@ public class Interface extends Component  implements ActionListener{
 		allalbel[1] = new JLabel("Min");
 		allalbel[2] = new JLabel("Max");
 		allalbel[3] = new JLabel("Base");
-		
+
 		ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
-		
+
 		show = new JLabel(icon);
-		
-		
+
+
 		totalnumber = new JTextField("5");
 		min = new JTextField("1");
 		max = new JTextField("20");
@@ -72,18 +74,18 @@ public class Interface extends Component  implements ActionListener{
 		for (int i=0; i< allalbel.length; allalbel[i++].setBounds(460, y+=30, 100, 25));
 
 		show.setBounds(10, 100, 1000, 1000);
-		
+		idontunderstand.setBounds(550, 150, 200,30);
 		credit0.setBounds(160, 20, 500, 35);
 		credit1.setBounds(220, 60, 400, 25);
 		credit.setBounds(220, 80, 400, 25);
-		
+
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
-		
-		betaalert.setBounds(600, 200, 400, 25);
-		betaalert.setForeground(Color.RED);
-		
+
+		betaalert.setBounds(540, 200, 400, 25);
+		betaalert.setForeground(Color.BLUE);
+
 		totalnumber.setBounds(250, 150, 200, 25);
 		min.setBounds(250, 180, 200, 25);
 		max.setBounds(250, 210, 200, 25);
@@ -98,15 +100,16 @@ public class Interface extends Component  implements ActionListener{
 		bg.add(choosea3);
 		button.setBounds(200, 600, 400, 100);
 		button.addActionListener(this);
+		idontunderstand.addActionListener(this);
 		chooseal.setSelected(true);
 		frame.setResizable(false);
 		frame.setSize(800, 800); 
 		frame.setFocusable(true); 
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-	    panel.add(chooseal);
+		panel.add(chooseal);
 		panel.add(choosea2);
-	    panel.add(choosea3);
+		panel.add(choosea3);
 		for (int i=0; i< allalbel.length; panel.add(allalbel[i++]));
 
 		panel.add(button);
@@ -119,6 +122,7 @@ public class Interface extends Component  implements ActionListener{
 		panel.add(credit0);
 		panel.add(show);
 		panel.add(betaalert);
+		panel.add(idontunderstand);
 		frame.add(panel);
 		frame.setVisible(true); 
 	}
@@ -137,28 +141,31 @@ public class Interface extends Component  implements ActionListener{
 
 			generateRand(total, minimum, maximum, baseofnum);
 		}
+		if (s.equals("I don't understand")) {
+			new Help().showHelp();
+		}
 
 	}
 
 	private void printingNumber(String rannum) {
 		if (cc>0)
-		for (int i=0; i< albel.length; panel.remove(albel[i++]));
+			for (int i=0; i< albel.length; panel.remove(albel[i++]));
 		cc++;
 		albel = new JLabel[gtr.getArrayList().size()];
 		for (int i=0; i< albel.length; albel[i++] = new JLabel());
-		
+
 		for (int i=0; i< albel.length; albel[i++].setFont(new Font("Serif", Font.BOLD, 60)));
 
 		for(int i=0; i < gtr.getArrayList().size(); i++ ){
 			albel[i].setText(gtr.getArrayList().get(i));
 		} 
-		
-		
-			new Thread(new Runnable() {
-				public void run() {
-					for (int i=0; i< albel.length; i++) {
-						albel[i].setForeground(Color.GREEN);
-						panel.add(albel[i]);
+
+
+		new Thread(new Runnable() {
+			public void run() {
+				for (int i=0; i< albel.length; i++) {
+					albel[i].setForeground(Color.GREEN);
+					panel.add(albel[i]);
 					for (int j =0; j< Integer.valueOf(gtr.getArrayList().get(i)); j++) {
 						try {
 							Thread.sleep(30);
@@ -168,11 +175,11 @@ public class Interface extends Component  implements ActionListener{
 							e.printStackTrace();
 						}
 					}
-					}
 				}
-			}).start();
-		
-		
+			}
+		}).start();
+
+
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
@@ -195,7 +202,14 @@ public class Interface extends Component  implements ActionListener{
 
 		new Thread(new Runnable() {
 			public void run() {
-			
+				String quota = gtr.QuotaCheck();
+				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + " Quota: " + quota);	
+			}
+		}).start();
+		
+		new Thread(new Runnable() {
+			public void run() {
+
 				String rannum = "";
 				if (chooseal.isSelected())
 					rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
@@ -203,37 +217,21 @@ public class Interface extends Component  implements ActionListener{
 					rannum = gtr.sequenceRandomGenerator(minimum, maximum);
 				else 
 					rannum = gtr.randomStringGenrator(total, maximum-minimum, true, true, true, true);
-          
+
 				printingNumber(rannum);
 				button.setText("Done");
 				stopc = false;
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
-				
-				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + " Quota: " + quota);				
-
+                
 				try {
-					Thread.sleep(1000);
-					button.setText("Wait for 10 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 9 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 8 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 7 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 6 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 5 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 4 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 3 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 2 seconds ...");
-					Thread.sleep(1000);
-					button.setText("Wait for 1 second ...");
-					Thread.sleep(1000);
+
+					for (int i=10; i >0; i--) {
+						Thread.sleep(1000);
+						button.setText("Wait for " +i+" second(s) ...");
+						Thread.sleep(900);
+					}
+
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -241,7 +239,7 @@ public class Interface extends Component  implements ActionListener{
 				button.setBackground(null);
 				button.setForeground(null);
 				button.setText("Generate TRUE random number");
-
+				
 			}
 
 		}).start();
