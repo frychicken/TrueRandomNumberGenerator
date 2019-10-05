@@ -33,7 +33,7 @@ public class Interface extends Component  implements ActionListener{
 	JTextField base;
 	JLabel albel[];
 	JLabel allalbel[] = new JLabel[4];
-	GenerateTrueRandom gtr = new GenerateTrueRandom();
+	GenerateTrueRandom gtr = new GenerateTrueRandom("bobdinh139@icloud.com");
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
 	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
