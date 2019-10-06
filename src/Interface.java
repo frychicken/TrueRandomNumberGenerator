@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import xyz.null0verflow.librandomorgclient.GenerateTrueRandom;
@@ -43,11 +44,13 @@ public class Interface extends Component  implements ActionListener{
 	JCheckBox darkmode = new JCheckBox("night-mode");
 	JCheckBox lightmode = new JCheckBox("light-mode");
 
-	
 	JLabel betaalert = new JLabel("Currently in Beta, only random integer works");
 
 	JButton idontunderstand = new JButton("I don't understand");
+    JButton nativedepiction = new JButton("Native Depiction"); 
+    JButton javadepiction = new JButton("Java Depiction"); 
 
+    
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
 	JRadioButton choosea3 = new JRadioButton("Random string");
@@ -91,6 +94,12 @@ public class Interface extends Component  implements ActionListener{
 		lightmode.setBounds(600, 150, 100, 25);
 		lightmode.addActionListener(this);
 		
+		nativedepiction.setBounds(30, 300, 200,25);
+		nativedepiction.setBackground(Color.MAGENTA);
+		
+		javadepiction.setBounds(30, 330, 200,25);
+		javadepiction.setBackground(Color.PINK);
+		
 		show.setBounds(10, 100, 1000, 1000);
 		idontunderstand.setBounds(300, 100, 200,30);
 		credit0.setBounds(160, 20, 500, 35);
@@ -101,7 +110,7 @@ public class Interface extends Component  implements ActionListener{
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
 		
-		betaalert.setBounds(540, 200, 400, 25);
+		betaalert.setBounds(540, 220, 400, 25);
 		betaalert.setForeground(Color.BLUE);
 
 		totalnumber.setBounds(250, 150, 200, 25);
@@ -121,6 +130,8 @@ public class Interface extends Component  implements ActionListener{
 		button.setBounds(200, 600, 400, 100);
 		button.addActionListener(this);
 		idontunderstand.addActionListener(this);
+		nativedepiction.addActionListener(this);
+		javadepiction.addActionListener(this);
 		chooseal.setSelected(true);
 		frame.setResizable(false);
 		frame.setSize(800, 800); 
@@ -145,6 +156,8 @@ public class Interface extends Component  implements ActionListener{
 		panel.add(idontunderstand);
 		panel.add(darkmode);
 		panel.add(lightmode);
+		panel.add(nativedepiction);
+		panel.add(javadepiction);
 		frame.add(panel);
 		frame.setVisible(true); 
 	}
@@ -220,6 +233,25 @@ public class Interface extends Component  implements ActionListener{
 				CheckUpdate.popUp("Please type in integers", "Warning");
 			}
 
+		}
+		if (s.equals("Native Depiction")) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException e1) {
+				e1.printStackTrace();
+			}
+			new Interface().execute(isdark);
+			frame.dispose();
+		}
+		if (s.equals("Java Depiction")) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+			new Interface().execute(isdark);
+			frame.dispose();
 		}
 		if (s.equals("I don't understand")) {
 			new Help().showHelp();
@@ -334,7 +366,7 @@ public class Interface extends Component  implements ActionListener{
 				button.setText("Done");
 				stopc = false;
 				button.setBackground(Color.BLACK);
-				button.setForeground(Color.WHITE);
+				button.setForeground(Color.ORANGE);
 				try {
 
 					for (int i=10; i >0; i--) {
