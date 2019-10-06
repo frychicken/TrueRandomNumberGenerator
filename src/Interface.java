@@ -37,11 +37,11 @@ public class Interface extends Component  implements ActionListener{
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
 	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
-	
+
 	JLabel betaalert = new JLabel("Currently in Beta, only random integer works");
 
 	JButton idontunderstand = new JButton("I don't understand");
-	
+
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
 	JRadioButton choosea3 = new JRadioButton("Random string");
@@ -62,7 +62,6 @@ public class Interface extends Component  implements ActionListener{
 		ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
 
 		show = new JLabel(icon);
-
 
 		totalnumber = new JTextField("5");
 		min = new JTextField("1");
@@ -134,16 +133,23 @@ public class Interface extends Component  implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand(); 
 		if (s.equals("Generate TRUE random number"))	{
-			minimum = Integer.valueOf(min.getText());
-			maximum = Integer.valueOf(max.getText());
-			total = Integer.valueOf(totalnumber.getText());
-			baseofnum = Integer.valueOf(base.getText());
+			try {
+				minimum = Integer.valueOf(min.getText());
+				maximum = Integer.valueOf(max.getText());
+				total = Integer.valueOf(totalnumber.getText());
+				baseofnum = Integer.valueOf(base.getText());
+				generateRand(total, minimum, maximum, baseofnum);
+			} catch (Exception exceptionx) {
+				exceptionx.printStackTrace();
+				CheckUpdate.popUp("Please type in integers", "Warning");
+			}
 
-			generateRand(total, minimum, maximum, baseofnum);
 		}
 		if (s.equals("I don't understand")) {
 			new Help().showHelp();
 		}
+
+
 
 	}
 
@@ -206,24 +212,27 @@ public class Interface extends Component  implements ActionListener{
 				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + " Quota: " + quota);	
 			}
 		}).start();
-		
+
 		new Thread(new Runnable() {
 			public void run() {
 
 				String rannum = "";
 				if (chooseal.isSelected())
 					rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
-				else if (choosea2.isSelected())
-					rannum = gtr.sequenceRandomGenerator(minimum, maximum);
-				else 
-					rannum = gtr.randomStringGenrator(total, maximum-minimum, true, true, true, true);
-
+				else if (choosea2.isSelected()) {
+					CheckUpdate.popUp("Currently not supported", "Action could not be completed");
+					//rannum = gtr.sequenceRandomGenerator(minimum, maximum);
+				}
+				else { 
+					CheckUpdate.popUp("Currently not supported", "Action could not be completed");
+					//rannum = gtr.randomStringGenrator(total, maximum-minimum, true, true, true, true);
+				}
 				printingNumber(rannum);
 				button.setText("Done");
 				stopc = false;
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
-                
+
 				try {
 
 					for (int i=10; i >0; i--) {
@@ -233,13 +242,12 @@ public class Interface extends Component  implements ActionListener{
 					}
 
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				button.setBackground(null);
 				button.setForeground(null);
 				button.setText("Generate TRUE random number");
-				
+
 			}
 
 		}).start();
