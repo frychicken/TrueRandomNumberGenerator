@@ -11,7 +11,11 @@ public class DrawCheck extends JPanel {
 	private String msg[] = new String[8];
 	private int f2 =(int)(Math.random() * ((7 - 0) + 1)) + 0;
 	public DrawCheck(JFrame frameC) {
-
+		try {
+			frameC.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public void paint(Graphics g) {
@@ -60,6 +64,6 @@ public class DrawCheck extends JPanel {
 		f.drawString(display, 20,120);
 	}
 	public int getVersion() {
-		return 3; 
+		return 4; 
 	}
 }

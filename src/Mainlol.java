@@ -10,7 +10,8 @@ public class Mainlol {
 			e.printStackTrace();
 
 		}
-	  UI.execute();
+	  UI.execute(false);
+	  
   }
 	
 }

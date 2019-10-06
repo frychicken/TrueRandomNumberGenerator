@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import xyz.null0verflow.librandomorgclient.GenerateTrueRandom;
@@ -35,9 +37,13 @@ public class Interface extends Component  implements ActionListener{
 	JLabel allalbel[] = new JLabel[4];
 	GenerateTrueRandom gtr = new GenerateTrueRandom("bobdinh139@icloud.com");
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
-	JLabel credit1 = new JLabel("by @frychicken with special thanks to random.org API ");
-	JLabel credit = new JLabel("Powered by librandom.org-client (written by @frychicken)");
+	JLabel credit1 = new JLabel("by @frychicken (Bob Dinh) with special thanks to random.org API ");
+	JLabel credit = new JLabel("Powered by librandom.org-client (written also by @frychicken)");
+	
+	JCheckBox darkmode = new JCheckBox("night-mode");
+	JCheckBox lightmode = new JCheckBox("light-mode");
 
+	
 	JLabel betaalert = new JLabel("Currently in Beta, only random integer works");
 
 	JButton idontunderstand = new JButton("I don't understand");
@@ -49,9 +55,15 @@ public class Interface extends Component  implements ActionListener{
 	JButton button = new JButton("Generate TRUE random number");
 	ButtonGroup bg;
 	JLabel show ;
-
-	public void execute() {
+    boolean isdark;
+	public void execute(boolean isdark) {
+		this.isdark = isdark;
 		frame = new JFrame("Try your luck tuesday");
+		try {
+			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		bg = new ButtonGroup(); 
 		panel = new JPanel();
 		allalbel[0] = new JLabel("Total number");
@@ -72,16 +84,23 @@ public class Interface extends Component  implements ActionListener{
 		int y = 120;
 		for (int i=0; i< allalbel.length; allalbel[i++].setBounds(460, y+=30, 100, 25));
 
+        darkmode.setVisible(!isdark);
+		darkmode.setBounds(600, 150, 100, 25);
+		darkmode.addActionListener(this);
+        lightmode.setVisible(isdark);
+		lightmode.setBounds(600, 150, 100, 25);
+		lightmode.addActionListener(this);
+		
 		show.setBounds(10, 100, 1000, 1000);
-		idontunderstand.setBounds(550, 150, 200,30);
+		idontunderstand.setBounds(300, 100, 200,30);
 		credit0.setBounds(160, 20, 500, 35);
-		credit1.setBounds(220, 60, 400, 25);
-		credit.setBounds(220, 80, 400, 25);
+		credit1.setBounds(200, 50, 450, 25);
+		credit.setBounds(220, 70, 400, 25);
 
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
-
+		
 		betaalert.setBounds(540, 200, 400, 25);
 		betaalert.setForeground(Color.BLUE);
 
@@ -94,6 +113,8 @@ public class Interface extends Component  implements ActionListener{
 		choosea2.setBounds(50, 180, 150, 25);
 		choosea3.setBounds(50, 210, 150, 25);
 
+		checkDarkMode();
+		
 		bg.add(chooseal);
 		bg.add(choosea2);
 		bg.add(choosea3);
@@ -122,8 +143,63 @@ public class Interface extends Component  implements ActionListener{
 		panel.add(show);
 		panel.add(betaalert);
 		panel.add(idontunderstand);
+		panel.add(darkmode);
+		panel.add(lightmode);
 		frame.add(panel);
 		frame.setVisible(true); 
+	}
+	private void checkDarkMode() {
+       if (isdark) {
+    	   credit0.setForeground(Color.WHITE);
+    	   credit1.setForeground(Color.WHITE);
+    	   chooseal.setBackground(Color.DARK_GRAY);
+    	   chooseal.setForeground(Color.WHITE);
+     	   choosea2.setBackground(Color.DARK_GRAY);
+    	   choosea2.setForeground(Color.WHITE);
+     	   choosea3.setBackground(Color.DARK_GRAY);
+    	   choosea3.setForeground(Color.WHITE);
+     	   darkmode.setBackground(Color.DARK_GRAY);
+    	   darkmode.setForeground(Color.WHITE);
+    	   lightmode.setBackground(Color.DARK_GRAY);
+    	   lightmode.setForeground(Color.WHITE);
+    	   totalnumber.setBackground(Color.DARK_GRAY);
+    	   totalnumber.setForeground(Color.WHITE);
+    	   totalnumber.setCaretColor(Color.WHITE);
+    	   min.setBackground(Color.DARK_GRAY);
+    	   min.setForeground(Color.WHITE);
+    	   min.setCaretColor(Color.WHITE);
+    	   max.setBackground(Color.DARK_GRAY);
+    	   max.setForeground(Color.WHITE);
+    	   max.setCaretColor(Color.WHITE);
+    	   base.setBackground(Color.DARK_GRAY);
+    	   base.setForeground(Color.WHITE);
+    	   base.setCaretColor(Color.WHITE);
+    	   for ( int i=0; i < allalbel.length; allalbel[i++].setForeground(Color.WHITE));
+       } else {
+    	   credit0.setForeground(Color.BLACK);
+    	   credit1.setForeground(Color.BLACK);
+    	   chooseal.setBackground(null);
+    	   chooseal.setForeground(Color.BLACK);
+     	   choosea2.setBackground(null);
+    	   choosea2.setForeground(Color.BLACK);
+     	   choosea3.setBackground(null);
+    	   choosea3.setForeground(Color.BLACK);
+     	   darkmode.setBackground(null);
+    	   darkmode.setForeground(Color.BLACK);
+    	   totalnumber.setBackground(Color.WHITE);
+    	   totalnumber.setForeground(Color.BLACK);
+    	   totalnumber.setCaretColor(Color.BLACK);
+    	   min.setBackground(Color.WHITE);
+    	   min.setForeground(Color.BLACK);
+    	   min.setCaretColor(Color.BLACK);
+    	   max.setBackground(Color.WHITE);
+    	   max.setForeground(Color.BLACK);
+    	   max.setCaretColor(Color.BLACK);
+    	   base.setBackground(Color.WHITE);
+    	   base.setForeground(Color.BLACK);
+    	   base.setCaretColor(Color.BLACK);
+    	   for ( int i=0; i < allalbel.length; allalbel[i++].setForeground(Color.BLACK));
+       }
 	}
 	public void changecolor() {
 		button.setForeground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
@@ -148,9 +224,20 @@ public class Interface extends Component  implements ActionListener{
 		if (s.equals("I don't understand")) {
 			new Help().showHelp();
 		}
-
-
-
+		if(darkmode.isSelected()) {
+			UIManager.put("OptionPane.background", Color.DARK_GRAY);
+			UIManager.put("Panel.background", Color.DARK_GRAY);
+			UIManager.put("OptionPane.messageForeground", Color.WHITE);
+			new Interface().execute(true);
+			frame.dispose();
+		} 
+		if(lightmode.isSelected()) {
+			UIManager.put("OptionPane.background", null);
+			UIManager.put("Panel.background", null);
+			UIManager.put("OptionPane.messageForeground", Color.BLACK);
+			new Interface().execute(false);
+			frame.dispose();
+		} 
 	}
 
 	private void printingNumber(String rannum) {
@@ -165,7 +252,6 @@ public class Interface extends Component  implements ActionListener{
 		for(int i=0; i < gtr.getArrayList().size(); i++ ){
 			albel[i].setText(gtr.getArrayList().get(i));
 		} 
-
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -185,9 +271,15 @@ public class Interface extends Component  implements ActionListener{
 			}
 		}).start();
 
-
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
+	}
+
+	private void defaultButton() {
+		stopc = false;
+		button.setBackground(null);
+		button.setForeground(null);
+		button.setText("Generate TRUE random number");
 	}
 
 	private void generateRand(int total, int minimum, int maximum, int baseofnum) {
@@ -217,14 +309,25 @@ public class Interface extends Component  implements ActionListener{
 			public void run() {
 
 				String rannum = "";
-				if (chooseal.isSelected())
-					rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
+				if (chooseal.isSelected()) {
+					if (total > 5) {
+						CheckUpdate.popUp("Only maximum of 5 numbers currently supported", "Action could not be completed");
+						defaultButton();
+						return;
+					} else
+						rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
+				}
 				else if (choosea2.isSelected()) {
 					CheckUpdate.popUp("Currently not supported", "Action could not be completed");
+					defaultButton();
+					return;
 					//rannum = gtr.sequenceRandomGenerator(minimum, maximum);
 				}
 				else { 
 					CheckUpdate.popUp("Currently not supported", "Action could not be completed");
+					stopc = false;
+					defaultButton();
+					return;
 					//rannum = gtr.randomStringGenrator(total, maximum-minimum, true, true, true, true);
 				}
 				printingNumber(rannum);
@@ -232,24 +335,18 @@ public class Interface extends Component  implements ActionListener{
 				stopc = false;
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
-
 				try {
 
 					for (int i=10; i >0; i--) {
 						Thread.sleep(1000);
 						button.setText("Wait for " +i+" second(s) ...");
-						Thread.sleep(900);
 					}
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				button.setBackground(null);
-				button.setForeground(null);
-				button.setText("Generate TRUE random number");
-
+				defaultButton();
 			}
-
 		}).start();
 	}
 }
