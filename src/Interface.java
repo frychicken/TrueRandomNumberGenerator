@@ -50,6 +50,8 @@ public class Interface extends Component  implements ActionListener{
 	JButton nativedepiction = new JButton("Native Depiction"); 
 	JButton javadepiction = new JButton("Java Depiction"); 
 
+	JLabel whatIwin = new JLabel("What you earn will appear here");
+
 
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
@@ -117,7 +119,10 @@ public class Interface extends Component  implements ActionListener{
 		min.setBounds(250, 180, 200, 25);
 		max.setBounds(250, 210, 200, 25);
 		base.setBounds(250, 240, 200, 25);
-
+		
+		whatIwin.setBounds(20, 530, 200, 50);
+        whatIwin.setForeground(Color.RED);
+		
 		chooseal.setBounds(50, 150, 150, 25);
 		choosea2.setBounds(50, 180, 150, 25);
 		choosea3.setBounds(50, 210, 150, 25);
@@ -158,6 +163,7 @@ public class Interface extends Component  implements ActionListener{
 		panel.add(lightmode);
 		panel.add(nativedepiction);
 		panel.add(javadepiction);
+		panel.add(whatIwin);
 		frame.add(panel);
 		frame.setVisible(true); 
 	}
@@ -293,7 +299,7 @@ public class Interface extends Component  implements ActionListener{
 					for (int j =0; j< Integer.valueOf(gtr.getArrayList().get(i)); j++) {
 						try {
 							Thread.sleep(30);
-							albel[i].setText(Integer.toString(j));
+							albel[i].setText(Integer.toString(j+1));
 							Thread.sleep(30);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
@@ -357,7 +363,7 @@ public class Interface extends Component  implements ActionListener{
 		new Thread(new Runnable() {
 			public void run() {
 				String quota = gtr.QuotaCheck();
-				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + " Quota: " + quota);	
+				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + "; Quota: " + quota);	
 			}
 		}).start();
 
@@ -371,6 +377,19 @@ public class Interface extends Component  implements ActionListener{
 					} else {
 						rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
 						printingNumber(rannum);
+						int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
+						double percentage = (winwhat*100/maximum);
+						if (percentage >= 90) {
+							whatIwin.setText("you earn: + 1 extra credit!");
+						} else if (percentage < 90 && percentage >= 80) {
+							whatIwin.setText("You earn: 3D-printed model!");
+						}else if (percentage < 80 && percentage >= 40){
+							whatIwin.setText("You earn: goodies bag!");
+
+						} else if (percentage < 40 && percentage >= 0){
+							whatIwin.setText("You earn: a sticker!");
+						}
+						
 					}
 				}
 				else if (choosea2.isSelected()) {
