@@ -44,6 +44,7 @@ public class ActuallyInterface extends Component{
 	JButton idontunderstand = new JButton("I don't understand");
 	JButton nativedepiction = new JButton("Native Depiction");
 	JButton javadepiction = new JButton("Java Depiction");
+
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
 	JRadioButton choosea3 = new JRadioButton("Random string");
@@ -56,7 +57,7 @@ public class ActuallyInterface extends Component{
 	public ActuallyInterface(boolean isdark) {
 		this.isdark = isdark;
 
-		frame = new JFrame("TRUE random generator");
+		frame = new JFrame("Try your luck tuesday");
 		try {
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
 		} catch (Exception e) {
@@ -74,7 +75,7 @@ public class ActuallyInterface extends Component{
 		stringg[3] = new JCheckBox("digit");
 		try {
 			ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
-			show = new JLabel(icon);
+			show = new JLabel(icon); 
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -86,6 +87,7 @@ public class ActuallyInterface extends Component{
 		panel.setLayout(null);
 		int y = 120;
 		for (int i=0; i< allalbel.length; allalbel[i++].setBounds(460, y+=30, 100, 25));
+		for (int i=0; i< stringg.length; stringg[i++].setSelected(true));
 
 		int cccc = 250;
 		for (int i=0; i< stringg.length; stringg[i++].setBounds(250, cccc+=30, 100, 25));
@@ -105,13 +107,13 @@ public class ActuallyInterface extends Component{
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
-		betaalert.setBounds(540, 220, 400, 25);
+		betaalert.setBounds(540, 220, 400, 50);
 		betaalert.setForeground(Color.BLUE);
 		totalnumber.setBounds(250, 150, 200, 25);
 		min.setBounds(250, 180, 200, 25);
 		max.setBounds(250, 210, 200, 25);
 		base.setBounds(250, 240, 200, 25);
-
+		
 		chooseal.setBounds(50, 150, 150, 25);
 		choosea2.setBounds(50, 180, 150, 25);
 		choosea3.setBounds(50, 210, 150, 25);
@@ -211,7 +213,7 @@ public class ActuallyInterface extends Component{
 				| UnsupportedLookAndFeelException e1) {
 			e1.printStackTrace();
 		}
-		new Interface(isdark).execute();
+		new Interface(isdark);
 		frame.dispose();
 	}
 	
@@ -221,7 +223,7 @@ public class ActuallyInterface extends Component{
 		} catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e1) {
 			e1.printStackTrace();
 		}
-		new Interface(isdark).execute();
+		new Interface(isdark);
 		frame.dispose();
 	}
 	
@@ -264,14 +266,14 @@ public class ActuallyInterface extends Component{
 		UIManager.put("OptionPane.background", Color.DARK_GRAY);
 		UIManager.put("Panel.background", Color.DARK_GRAY);
 		UIManager.put("OptionPane.messageForeground", Color.WHITE);
-		new Interface(true).execute();
+		new Interface(true);
 		frame.dispose();
 	}
 	protected void togglelight() {
 		UIManager.put("OptionPane.background", null);
 		UIManager.put("Panel.background", null);
 		UIManager.put("OptionPane.messageForeground", Color.BLACK);
-		new Interface(false).execute();
+		new Interface(false);
 		frame.dispose();
 	}
 	

@@ -8,8 +8,6 @@ public class Interface extends ActuallyInterface implements ActionListener{
 	private boolean click = false;
 	public Interface(boolean isdark) {
 		super(isdark);
-	}
-	public void execute() {
 		darkmode.addActionListener(this);
 		lightmode.setVisible(isdark);
 		lightmode.addActionListener(this);
@@ -21,8 +19,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		nativedepiction.addActionListener(this);
 		javadepiction.addActionListener(this);
 		for (int i=0; i< stringg.length; (stringg[i++]).addActionListener(this));
-
 	}
+
 	private void changecolor() {
 		button.setForeground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 		button.setBackground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
@@ -86,6 +84,21 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 	}
+
+/*	private boolean checkDuplicates() {
+		int c =1;
+		for(int i=0; i < gtr.getArrayList().size(); i++ ){
+			String a =  gtr.getArrayList().get(i);
+			for(int j=c; j < gtr.getArrayList().size(); j++ ) {
+				if (a.equals(gtr.getArrayList().get(j))) {
+					return true;
+				}
+			}
+			c++;
+		}
+		return false;
+	}
+*/
 
 	private void printingNumber(String rannum) {
 		if (cc>0)
@@ -205,7 +218,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				while(stopc) {
 					String quota = gtr.QuotaCheck();
 					String sCode = Integer.toString(gtr.getStatusCode());
-					betaalert.setText("status code: " + sCode + "; Quota: "+quota); 
+					betaalert.setText("<html>status code: " + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "</html>"); 
 				}
 				if (gtr.getStatusCode()==503) {
 					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");
