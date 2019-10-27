@@ -2,15 +2,27 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import org.json.simple.JSONArray;
+import org.json.simple.parser.ParseException;
+
+import xyz.null0verflow.librandomorgclient.TooManyRequest;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private boolean click = false;
+
+	// add listeners 
 	public Interface(boolean isdark) {
 		super(isdark);
 		darkmode.addActionListener(this);
 		lightmode.setVisible(isdark);
 		lightmode.addActionListener(this);
+		atmosphericNoise.addActionListener(this);
+		radioactivedecay.addActionListener(this);
 		choosea3.addActionListener(this);
 		choosea2.addActionListener(this);
 		chooseal.addActionListener(this);
@@ -21,17 +33,21 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		for (int i=0; i< stringg.length; (stringg[i++]).addActionListener(this));
 	}
 
+	// change color for the generate random button
 	private void changecolor() {
 		button.setForeground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 		button.setBackground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 	}
+	// When anything is clicked 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
 		if (s.equals("Generate TRUE random number")) {
 			click = !click;
+
 			try {
-				minimum = Integer.valueOf(min.getText());
+				if (atmosphericNoise.isSelected())
+					minimum = Integer.valueOf(min.getText());
 				maximum = Integer.valueOf(max.getText());
 				total = Integer.valueOf(totalnumber.getText());
 				baseofnum = Integer.valueOf(base.getText());
@@ -57,7 +73,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			else 
 				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
-		if (s.equals("I don't understand")) {
+		if (s.equals("I have doubts")) {
 			new Help().showHelp();
 		}
 		if (choosea3.isSelected()) {
@@ -71,6 +87,12 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				choose1();
 			}
 		}
+		if (radioactivedecay.isSelected()) {
+			radioactiveSelect();
+		} else if (atmosphericNoise.isSelected()) {
+			atmosphericSelect();
+		}
+
 		if(darkmode.isSelected()) {
 			if(!click)
 				togglenight();
@@ -85,7 +107,9 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 	}
 
-/*	private boolean checkDuplicates() {
+	/*
+	// checking duplicates for atmospheric noise
+	private boolean checkDuplicates() {
 		int c =1;
 		for(int i=0; i < gtr.getArrayList().size(); i++ ){
 			String a =  gtr.getArrayList().get(i);
@@ -98,9 +122,11 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 		return false;
 	}
+
 */
 
-	private void printingNumber(String rannum) {
+	// print number for atmospheric noise
+	private void printingNumber() {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
 		cc++;
@@ -130,12 +156,16 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
+
+	// reset the generate button to default
 	private void defaultButton() {
 		stopc = false;
 		button.setBackground(null);
 		button.setForeground(null);
 		button.setText("Generate TRUE random number");
 	}
+
+	// display random data if there are more than 5 numbers or they are sequences or they are strings
 	private void showing() {
 		String display = "";
 		for(int i=0; i < gtr.getArrayList().size(); i++ ){
@@ -147,6 +177,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		CheckUpdate.popUp(display, "Done!");
 		defaultButton();
 	}
+
+	// cool down before each request
 	private void waitF() {
 		try {
 			for (int i=10; i >0; i--) {
@@ -155,9 +187,53 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			CheckUpdate.popUp(e.toString(), "Error");
 		}
 		click = !click;
 	}
+	
+	// display cool down
+	private void buttonWaitDisplay() {
+		button.setText("Done");
+		stopc = false;
+		button.setBackground(Color.BLACK);
+		button.setForeground(Color.ORANGE);
+		waitF();
+		defaultButton();
+	}
+
+	//showing library output for quota, etc
+	private void displayOutput(boolean isDecay, String data) {
+		new Thread(new Runnable() {
+			public void run() {
+				while(stopc) {
+					String quota  = "";
+					String sCode ="";
+					JSONArray rawnum = null ;
+					if (!isDecay) {
+						try {
+							quota = gtr.QuotaCheck();
+						} catch (TooManyRequest | IOException e) {
+							e.printStackTrace();
+							CheckUpdate.popUp(e.toString(), "Error");
+						}
+						sCode = "status code: " + Integer.toString(gtr.getStatusCode());
+					}else {
+						quota = rade.parseURl(data, "quotaRequestsRemaining");
+						sCode = "Quota bytes: "+rade.parseURl(data, "quotaBytesRemaining");
+						try {
+							rawnum = rade.getRandom(data);
+						} catch (ParseException e) {
+							e.printStackTrace();
+							CheckUpdate.popUp(e.toString(), "Error");
+						}
+					}
+					betaalert.setText("<html>" + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "<br/>"+rawnum+"</html>"); 
+				}
+			}
+		}).start();
+	}
+	// Generate random number
 	private void generateRand(int total, int minimum, int maximum, int baseofnum) {
 		stopc = true;
 		button.setText("Retrieving TRUE random number from server");
@@ -169,6 +245,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error");
 					}
 				}
 			}
@@ -176,55 +253,79 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		new Thread(new Runnable() {
 			public void run() {
 				String rannum = "";
-				if (chooseal.isSelected()) {
-					if (total > 5 || baseofnum !=10) {
-						showing();
-					} else {
-						rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
-						printingNumber(rannum);
+				if (radioactivedecay.isSelected()) {
+					String data= "";
+					try {
+						data = rade.getDataFromServer(Integer.toString(total), min.getText());
+					} catch (Exception e) {
+						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error!");
+					}
+					displayOutput(true, data);
+					try {
+							CheckUpdate.popUp(rade.getRandom(data).toString(), "Done!");
+					} catch (ParseException e) {
+						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error!");
+					}
+				}
+				else if (atmosphericNoise.isSelected()) {
+					displayOutput(false, "");
+					if (chooseal.isSelected()) {
+						try {
+							rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
+							if (total > 5 || baseofnum !=10) {
+								showing();
+			                    buttonWaitDisplay();
+								return;
+							}
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
+						}
+							printingNumber();
 
 						System.out.println(rannum);
 					}
-				}
-				else if (choosea2.isSelected()) {
-					rannum = gtr.sequenceRandomGenerator(minimum, maximum);
-					showing();
-					defaultButton();
-				}
-				else {
-					String display = "";
-					boolean digit = (stringg[3].isSelected());
-					boolean uppercase = (stringg[1].isSelected());
-					boolean unique = (stringg[0].isSelected());
-					boolean lowercase = (stringg[2].isSelected());
-					rannum = gtr.randomStringGenrator(total, maximum, digit, uppercase, lowercase, unique);
-					for(int i=0; i < gtr.getArrayList().size(); i++ ){
-						display += gtr.getArrayList().get(i) + "\n";
+					else if (choosea2.isSelected()) {
+						try {
+							rannum = gtr.sequenceRandomGenerator(minimum, maximum);
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
+						}
+						showing();
+						defaultButton();
 					}
-					CheckUpdate.popUp(display, "Done!");
-					stopc = false;
-					defaultButton();
+					else {
+						String display = "";
+						boolean digit = (stringg[3].isSelected());
+						boolean uppercase = (stringg[1].isSelected());
+						boolean unique = (stringg[0].isSelected());
+						boolean lowercase = (stringg[2].isSelected());
+						try {
+							rannum = gtr.randomStringGenrator(total, maximum, digit, uppercase, lowercase, unique);
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
+						}
+						for(int i=0; i < gtr.getArrayList().size(); i++ ){
+							display += gtr.getArrayList().get(i) + "\n";
+						}
+						CheckUpdate.popUp(display, "Done!");
+						stopc = false;
+						defaultButton();
+					}
 				}
-				button.setText("Done");
-				stopc = false;
-				button.setBackground(Color.BLACK);
-				button.setForeground(Color.ORANGE);
-				waitF();
-				defaultButton();
+				buttonWaitDisplay();
 			}
 		}).start();
-		new Thread(new Runnable() {
-			public void run() {
-				while(stopc) {
-					String quota = gtr.QuotaCheck();
-					String sCode = Integer.toString(gtr.getStatusCode());
-					betaalert.setText("<html>status code: " + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "</html>"); 
-				}
-				if (gtr.getStatusCode()==503) {
-					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");
-				}
 
-			}
-		}).start();
 	}
 }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_221"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/bobdi/Desktop/librandom.org-client.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/bobdi/Desktop/TryYourLuckTuesday (1)/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bobdi/Desktop/TryYourLuckTuesday (1)/libfourmilab.ch-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/bobdi/Desktop/TryYourLuckTuesday (1)/librandom.org-client.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
