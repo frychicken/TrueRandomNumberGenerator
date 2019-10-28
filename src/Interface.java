@@ -141,7 +141,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				for (int i=0; i< albel.length; i++) {
 					albel[i].setForeground(Color.GREEN);
 					panel.add(albel[i]);
-					for (int j =0; j<= Integer.valueOf(gtr.getArrayList().get(i)); j++) {
+					for (int j =-1; j<= Integer.valueOf(gtr.getArrayList().get(i)); j++) {
 						try {
 							Thread.sleep(30);
 							albel[i].setText(Integer.toString(j));
